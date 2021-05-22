@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dev.model.Cliente;
 import com.dev.repository.ClienteRepository;
+import com.dev.service.CatalagoClienteService;
 
 @RestController
 @RequestMapping("clientes")
@@ -27,6 +28,10 @@ public class ClienteController {
 	
 	@Autowired
 	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private CatalagoClienteService catalagoClienteService;
+	
 	
 	@GetMapping
 	public List<Cliente> listar() {
@@ -51,7 +56,7 @@ public class ClienteController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Cliente adicionar(@Valid @RequestBody Cliente cliente) {
-		return clienteRepository.save(cliente);
+		return catalagoClienteService.salvar(cliente);
 	}
 	
 	
@@ -61,17 +66,17 @@ public class ClienteController {
 		if(!clienteRepository.existsById(clienteId)) {
 			return ResponseEntity.notFound().build();
 		}
-		cliente.setId(clienteId);
-		cliente = clienteRepository.save(cliente);
+		cliente = catalagoClienteService.salvar(cliente);
 		return ResponseEntity.ok(cliente);
 	}
-	
 	@DeleteMapping("/{clienteId}")
 	public ResponseEntity<Void> excluir(@PathVariable Long clienteId){
+		
 		if(!clienteRepository.existsById(clienteId)) {
 			return ResponseEntity.notFound().build();
 		}
-		clienteRepository.deleteById(clienteId);
+
+		catalagoClienteService.excluir(clienteId);
 		return ResponseEntity.noContent().build();
 	}
 	
