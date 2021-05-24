@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dev.dto.DestinatarioDTO;
+import com.dev.dto.EntregaDTO;
 import com.dev.model.Entrega;
 import com.dev.repository.EntregaRepository;
 import com.dev.service.SolicitacaoEntregaService;
@@ -37,9 +39,24 @@ public class EntregaController {
 		return entregaRepository.findAll();
 	}
 	@GetMapping("/{entregaId}")
-	public ResponseEntity<Entrega> buscar(@PathVariable Long entregaId){
+	public ResponseEntity<EntregaDTO> buscar(@PathVariable Long entregaId){
 		return entregaRepository.findById(entregaId)
-		.map( entrega -> ResponseEntity.ok(entrega))
+		.map( entrega -> {
+			EntregaDTO entregaDTO = new EntregaDTO();
+			entregaDTO.setId(entrega.getId());
+			entregaDTO.setNomeCliente(entrega.getCliente().getNome());
+			entregaDTO.setDestinatario(new DestinatarioDTO());
+			entregaDTO.getDestinatario().setNome(entrega.getDestinatario().getNome());
+			entregaDTO.getDestinatario().setLogradouro(entrega.getDestinatario().getLogradouro());
+			entregaDTO.getDestinatario().setNumero(entrega.getDestinatario().getNumero());
+			entregaDTO.getDestinatario().setComplemento(entrega.getDestinatario().getComplemento());
+			entregaDTO.getDestinatario().setBairro(entrega.getDestinatario().getBairro());
+			entregaDTO.setTaxa(entrega.getTaxa());
+			entrega.setStatus(entrega.getStatus());
+			entrega.setDataPedido(entrega.getDataPedido());
+			entrega.setDataFinalizacao(entrega.getDataFinalizacao());
+			return ResponseEntity.ok(entregaDTO);
+		})
 		.orElse(ResponseEntity.notFound().build());
 			
 	}
