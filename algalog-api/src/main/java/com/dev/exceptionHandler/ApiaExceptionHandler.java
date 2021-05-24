@@ -1,9 +1,8 @@
 package com.dev.exceptionHandler;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -41,7 +40,7 @@ public class ApiaExceptionHandler extends ResponseEntityExceptionHandler {
 
 		Problema problema = new Problema();
 		problema.setStatus(status.value());
-		problema.setDataHora(LocalDateTime.now());
+		problema.setDataHora(OffsetDateTime.now());
 		problema.setTitulo("Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente");
 		problema.setCampos(campos);
 		
@@ -54,7 +53,7 @@ public class ApiaExceptionHandler extends ResponseEntityExceptionHandler {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		Problema problema = new Problema();
 		problema.setStatus(status.value());
-		problema.setDataHora(LocalDateTime.now());
+		problema.setDataHora(OffsetDateTime.now());
 		problema.setTitulo(ex.getMessage());
 
 	
