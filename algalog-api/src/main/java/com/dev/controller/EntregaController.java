@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -18,6 +19,7 @@ import com.dev.dto.input.EntregaInput;
 import com.dev.mapper.EntregaMapper;
 import com.dev.model.Entrega;
 import com.dev.repository.EntregaRepository;
+import com.dev.service.FinalizacaoEntregaService;
 import com.dev.service.SolicitacaoEntregaService;
 
 @RestController
@@ -26,8 +28,13 @@ public class EntregaController {
 
 	@Autowired
 	private EntregaRepository entregaRepository;
+	
 	@Autowired
 	private SolicitacaoEntregaService solicitacaoEntregaService;
+	
+	@Autowired
+	FinalizacaoEntregaService finalizacaoEntregaService;
+	
 	
 	@Autowired
 	private EntregaMapper entregaMapper;
@@ -39,6 +46,12 @@ public class EntregaController {
 		Entrega novaEntrega = entregaMapper.toEntity(entregaInput);
 		
 		return entregaMapper.toModel(solicitacaoEntregaService.solicitar(novaEntrega));
+	}
+	
+	@PutMapping("/{entregaId}/finalizacao")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void finalizar(@PathVariable Long entregaId) {
+		finalizacaoEntregaService.finalizar(entregaId);
 	}
 	
 	@GetMapping
@@ -53,4 +66,5 @@ public class EntregaController {
 		.orElse(ResponseEntity.notFound().build());
 			
 	}
+	
 }

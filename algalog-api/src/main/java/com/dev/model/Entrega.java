@@ -20,6 +20,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.ConvertGroup;
 
+import com.dev.model.exception.NegocioException;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
@@ -146,5 +147,21 @@ public class Entrega {
 		return ocorrencia;
 	}
 	
+	public void finalizar() {
+	
+		if(naoPodeserFinalizada()) {
+			throw new NegocioException("Entrega não pode ser finalizada");
+		}
+		setStatus(StatusEntrega.FINALIZADA);
+		setDataFinalizacao(OffsetDateTime.now());
+	}
+	
+	public boolean podeSerfinalizada() {
+		return StatusEntrega.PENDENTE.equals(getStatus());
+	}
+	
+	public boolean naoPodeserFinalizada() {
+		return !podeSerfinalizada();
+	}
 	
 }
