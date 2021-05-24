@@ -7,24 +7,20 @@ import com.dev.model.StatusEntrega;
 
 public class EntregaDTO {
 		private Long id;
-		private String nomeCliente;
+		private ClienteResumoDTO cliente;
 		private DestinatarioDTO destinatario;
 		private BigDecimal taxa;
 		private StatusEntrega status;
 		private OffsetDateTime dataPedido;
 		private OffsetDateTime dataFinalizacao;
+		
 		public Long getId() {
 			return id;
 		}
 		public void setId(Long id) {
 			this.id = id;
 		}
-		public String getNomeCliente() {
-			return nomeCliente;
-		}
-		public void setNomeCliente(String nomeCliente) {
-			this.nomeCliente = nomeCliente;
-		}
+
 		public DestinatarioDTO getDestinatario() {
 			return destinatario;
 		}
@@ -54,6 +50,12 @@ public class EntregaDTO {
 		}
 		public void setDataFinalizacao(OffsetDateTime dataFinalizacao) {
 			this.dataFinalizacao = dataFinalizacao;
+		}
+		public ClienteResumoDTO getCliente() {
+			return cliente;
+		}
+		public void setCliente(ClienteResumoDTO cliente) {
+			this.cliente = cliente;
 		}
 		
 		
